@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="header-section">
-    <h2>Your Cart</h2>
+    <h2>Your Bag</h2>
     <p class="lead">Review your items before checkout.</p>
 </div>
 <div class="card mb-4">
