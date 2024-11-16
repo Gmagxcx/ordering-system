@@ -1,0 +1,77 @@
+
+            /* Color Variables */
+            :root {
+                --primary-color: #fc89ac;
+                --secondary-color: #ff493e;
+                --white-color: #f7f7f7;
+                 }
+        
+        body {
+            background-image: url('/images/bg.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            opacity: 0.9;
+            background-repeat: no-repeat;
+            background-color:  var(--white-color);
+        }
+        
+        .form-container {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--primary-color);
+            margin-bottom: 20px; 
+            opacity: 1;
+        }
+        
+        .btn {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            text-align: center;
+            display: block;
+            margin: 0 auto;
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        
+        .btn:hover {
+            color: var(--primary-color);
+            background-color: var(--white-color);
+            border: 1px solid var(--primary-color);
+        }
+        
+        .title {
+            background-color: var(--white-color);
+            color: var(--primary-color);
+        }
+        
+        h5 {
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        a {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 30px; 
+        }
+        .register{
+            text-align: center;
+            margin: 20px;
+        }
+        .forgotpass{
+            margin: 20px;
+        }
+        .img-fluid{
+            justify-content: center;
+            text-align: center;
+        }

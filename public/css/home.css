@@ -1,0 +1,107 @@
+:root {
+    --primary-color: #fc89ac;
+    --secondary-color: #ff493e;
+    --white-color: #f7f7f7;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--white-color);
+}
+
+.navbar {
+    background-color: var(--primary-color);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand,
+.nav-link {
+    color: var(--white-color) !important;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.navbar-toggler {
+    border-color: var(--primary-color);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28185, 0, 0, 0.5%29' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.nav-link:hover {
+    color: var(--secondary-color) !important;
+}
+
+h1,
+h2 {
+    color: var(--primary-color);
+    font-weight: bold;
+    text-align: center;  
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+}
+
+.card-title,
+.card-text {
+    color: var(--primary-color);
+}
+
+.product-img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.bi {
+    color: var(--white-color);
+    margin-right: 0px;
+}
+
+.badge {
+    color: var(--secondary-color);
+    font-style: bold;
+    font-size: 10px;
+}
+
+.search-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 10px;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    display: flex;
+    align-items: center; 
+}
+
+.search-container input.form-control {
+    flex-grow: 1;
+    margin-right: 10px; 
+}
+
+.btn-locate {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    text-align: center;
+    border-radius: 10px;
+}
+
+.btn-locate i {
+    color: var(--white-color);
+}
+
+.welcome-text {
+    margin-top: 50px;
+}
