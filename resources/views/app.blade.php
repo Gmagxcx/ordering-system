@@ -15,30 +15,61 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a href="/"><img src="{{ asset('images/kendy.png') }}" alt="Logo" width="60" height="60" class="img-fluid"></a>
-            <a class="navbar-brand" href="{{ url('/') }}"> Kendy Corner</a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a href="/"><img src="{{ asset('images/kendy.png') }}" alt="Logo" width="60" height="60" class="img-fluid"></a>
+        <a class="navbar-brand" href="{{ url('/') }}"> Kendy Corner</a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/cart') }}">
+                        <i class="bi bi-bag">
+                            <span class="badge">0</span>
+                        </i>
+                    </a>
+                </li>
+                
+                @if(Auth::check())
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/cart') }}"><i class="bi bi-bag"><span class="badge">0</span></i></a>
+                        <a class="nav-link" href="{{ url('/logout') }}"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
+                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
                     </li>
+                @else
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/login') }}">Login</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/register') }}">Sign up</a>
                     </li>
-                </ul>
-            </div>
+                @endif
+                @if(Session::has('first_name'))
+                    <li class="nav-link welcome-message">
+                        <span>Welcome back, {{ Session::get('first_name') }}</span>
+                        
+                        @if(Session::get('access') === 'admin')
+                            <span class="admin">(Admin)</span>
+                        @elseif(Session::get('access') === 'employee')
+                            <span class="employee">(Employee)</span>
+                        @else
+                            <span class="user"></span>
+                        @endif
+                    </li>
+                @endif
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
+
     <div class="container mt-5">
         @yield('content')
     </div>

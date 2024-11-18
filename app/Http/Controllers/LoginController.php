@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use App\Models\User;
 
 class LoginController extends Controller
@@ -22,11 +23,29 @@ class LoginController extends Controller
             return back()->withErrors(['email' => 'The provided credentials do not match our records.']);
         }
 
+        // Inside your LoginController after successful login:
+
         if (Hash::check($request->password, $user->password)) {
-            $request->session()->regenerate();
+            Auth::login($user);
+            Session::regenerate();
+
+            Session::put('first_name', $user->first_name);
+            Session::put('access', $user->access); 
+
             return redirect()->intended('/');
         }
 
         return back()->withErrors(['email' => 'The provided credentials do not match our records.']);
     }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login')->with('message', 'You have been logged out successfully.');
+    }
+
 }

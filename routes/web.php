@@ -31,9 +31,15 @@ Route::get('/login', function () {
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
+
+//LOGOUT
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+
 // SIGN-UP / REGISTER ROUTES
 Route::get('/register', function () {
     return view('register');
 })->name('register');
 
 Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+
