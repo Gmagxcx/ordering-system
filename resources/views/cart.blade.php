@@ -15,6 +15,9 @@
     </div>
 </div>
 <div class="text-center">
-    <a href="#" class="btn btn-primary">Proceed to Checkout</a>
+    <form action="{{ route('checkout.store') }}" method="POST">
+        @csrf
+        <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
+    </form>
 </div>
 @endsection

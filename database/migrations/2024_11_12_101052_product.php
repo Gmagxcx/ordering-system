@@ -18,8 +18,8 @@ return new class extends Migration
             $table->integer('price');
             $table->integer('available_quantity');
             $table->string('category');
+            $table->string('image')->nullable(); // New column to store the image path
             $table->timestamps();
-            
         });
     }
 
