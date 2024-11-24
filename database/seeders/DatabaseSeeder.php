@@ -30,9 +30,9 @@ class DatabaseSeeder extends Seeder
 
         // Regular
         User::create([
-            'first_name' => 'John',
-            'last_name' => 'Doe',
-            'email' => 'john.doe@example.com',
+            'first_name' => 'Gmag',
+            'last_name' => 'ooo',
+            'email' => 'magooo.xyz@gmail.com',
             'password' => Hash::make('password'),
             'access' => 'user', 
         ]);

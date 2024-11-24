@@ -39,13 +39,23 @@ class LoginController extends Controller
     }
 
     public function logout(Request $request)
-    {
-        Auth::logout();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/login')->with('message', 'You have been logged out successfully.');
+{
+    // Clear the user's cart from the session
+    $request->session()->forget('cart');
+    
+    // Debugging: Check if cart is still in session
+    if ($request->session()->has('cart')) {
+        dd('Cart still in session!');
     }
+
+    // Log out the user
+    Auth::logout();
+
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/login')->with('message', 'You have been logged out successfully.');
+}
+
 
 }

@@ -27,13 +27,21 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/cart') }}">
-                        <i class="bi bi-bag">
-                            <span class="badge">0</span>
-                        </i>
-                    </a>
+                <a class="nav-link" href="{{ url('/cart') }}">
+                <i class="bi bi-bag">
+                <span class="badge">
+                @php
+                    // Get the cart from the cookie, or use an empty array if not set
+                    $cart = json_decode(Cookie::get('cart', '[]'), true);
+                    // Sum the quantities of the items in the cart
+                    $totalQuantity = array_sum(array_column($cart, 'quantity'));
+                @endphp
+                {{ $totalQuantity }}
+
+                </span>
+            </i>
+                </a>
                 </li>
-                
                 @if(Auth::check())
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/logout') }}"

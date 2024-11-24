@@ -58,7 +58,7 @@ class AdminProductController extends Controller
 
             Log::info('Product added successfully', ['product_name' => $request->input('product_name')]);
 
-            return redirect()->route('admin.products.create')->with('success', 'Product added successfully!');
+            return redirect()->route('products.index')->with('success', 'Product added successfully!');
         } catch (\Exception $e) {
             Log::error('Error storing product', ['exception' => $e->getMessage()]);
             return back()->withErrors(['error' => 'There was an error adding the product. Please try again.']);
@@ -101,8 +101,26 @@ class AdminProductController extends Controller
 
         $product->save();
 
-        return redirect()->route('admin.products.edit', $product->product_id)->with('success', 'Product updated successfully!');
+        return redirect()->route('products.index', $product->product_id)->with('updated', 'Product updated successfully!');
     }
+
+    public function updateQuantity(Request $request, $product_id)
+    {
+        $product = Product::findOrFail($product_id);
+
+        if ($request->has('quantity_change')) {
+            if ($request->input('quantity_change') === 'increase') {
+                $product->available_quantity++;
+            } elseif ($request->input('quantity_change') === 'decrease' && $product->available_quantity > 0) {
+                $product->available_quantity--;
+            }
+        }
+
+        $product->save();
+
+        return redirect()->back()->with('updated', 'Product quantity updated successfully!');
+    }
+
 
     //DELETE
     public function destroy($product_id)
@@ -117,7 +135,7 @@ class AdminProductController extends Controller
 
             $product->delete();
 
-            return redirect()->route('admin.products.index')->with('success', 'Product removed successfully.');
+            return redirect()->route('admin.products.index')->with('updated', 'Product removed successfully.');
         } catch (\Exception $e) {
             Log::error('Error removing product', ['exception' => $e->getMessage()]);
             return back()->withErrors(['error' => 'There was an error removing the product.']);
