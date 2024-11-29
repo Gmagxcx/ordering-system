@@ -18,7 +18,7 @@ class UserController extends Controller
         $employees = $users->where('access', 'employee')->count();
         $administrators = $users->where('access', 'admin')->count();
 
-        $users = User::paginate(2);
+        $users = User::paginate(10);
         
         return view('admin_viewUsers', compact('users', 'totalUsers', 'regularUsers', 'employees', 'administrators')); // Return view with users data
     }
