@@ -12,7 +12,15 @@ class UserController extends Controller
     {
         $users = User::all(); // Retrieve all users from the database
 
-        return view('admin_viewUsers', compact('users')); // Return view with users data
+        // Count the number of users by access level
+        $totalUsers = $users->count();
+        $regularUsers = $users->where('access', 'user')->count();
+        $employees = $users->where('access', 'employee')->count();
+        $administrators = $users->where('access', 'admin')->count();
+
+        $users = User::paginate(2);
+        
+        return view('admin_viewUsers', compact('users', 'totalUsers', 'regularUsers', 'employees', 'administrators')); // Return view with users data
     }
 
     // Show the form for editing a specific user
