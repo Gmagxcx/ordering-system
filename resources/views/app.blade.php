@@ -30,15 +30,19 @@
                 <a class="nav-link" href="{{ url('/cart') }}">
                 <i class="bi bi-bag">
                 <span class="badge">
-                @php
-                    // Get the cart from the cookie, or use an empty array if not set
-                    $cart = json_decode(Cookie::get('cart', '[]'), true);
-                    // Sum the quantities of the items in the cart
-                    $totalQuantity = array_sum(array_column($cart, 'quantity'));
-                @endphp
-                {{ $totalQuantity }}
+                    @php
+                        use Illuminate\Support\Facades\Auth;
+                        $user = Auth::user();
 
+                        $totalQuantity = \App\Models\OrderItem::whereHas('order', function ($query) use ($user) {
+                            $query->where('user_id', $user->id)
+                                ->where('order_status', 'cart');
+                        })->sum('quantity');
+                    @endphp
+
+                    {{ $totalQuantity }}
                 </span>
+
             </i>
                 </a>
                 </li>

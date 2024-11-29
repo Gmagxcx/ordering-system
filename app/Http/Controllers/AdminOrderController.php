@@ -10,24 +10,30 @@ class AdminOrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::with('user')->get(); // Get all orders with user detail
-        return view('admin.orders.index', compact('orders'));
+        $orders = Order::with('user')->get(); // Get all orders with user details
+        return view('admin_order_page', compact('orders')); // Make sure to use the correct view name
     }
 
     public function edit($id)
     {
-        $order = Order::with('orderItems.product')->findOrFail($id);
-        return view('admin.orders.edit', compact('order'));
+        $order = Order::with('items.product')->findOrFail($id); 
+        return view('admin_order_page', compact('order')); 
     }
+
 
     public function update(Request $request, $id)
     {
-        $order = Order::findOrFail($id);
-        $order->update([
-            'order_status' => $request->input('order_status'),
+        // Validate the order status input
+        $validated = $request->validate([
+            'order_status' => 'required|in:pending,processing,completed',
         ]);
 
-        return redirect()->route('admin.orders.index')->with('success', 'Order updated successfully.');
+        $order = Order::findOrFail($id);
+        $order->update([
+            'order_status' => $validated['order_status'],
+        ]);
+
+        return redirect()->route('orders.index')->with('success', 'Order status updated successfully.');
     }
 
     public function destroy($id)
@@ -35,6 +41,6 @@ class AdminOrderController extends Controller
         $order = Order::findOrFail($id);
         $order->delete();
 
-        return redirect()->route('admin.orders.index')->with('success', 'Order deleted successfully.');
+        return redirect()->route('orders.index')->with('success', 'Order deleted successfully.');
     }
 }

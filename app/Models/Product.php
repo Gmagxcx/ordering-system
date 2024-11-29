@@ -23,11 +23,13 @@ class Product extends Model
     // Relationships
     public function orderItems()
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(OrderItem::class, 'product_id');
     }
+
 
     public function inventories()
     {
         return $this->hasOne(Inventory::class);
     }
+    
 }

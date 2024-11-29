@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
+
 class AdminProductController extends Controller
 {
     public function create()
@@ -72,74 +73,79 @@ class AdminProductController extends Controller
     }
 
     public function update(Request $request, $product_id)
-    {
-        $request->validate([
-            'product_name' => 'required|string|max:255',
-            'description' => 'required',
-            'price' => 'required|numeric|min:0',
-            'available_quantity' => 'required|integer|min:0',
-            'category' => 'required|string',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
-        ]);
+{
+    $request->validate([
+        'product_name' => 'required|string|max:255',
+        'description' => 'required',
+        'price' => 'required|numeric|min:0',
+        'available_quantity' => 'required|integer|min:0',
+        'category' => 'required|string',
+        'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+    ]);
 
-        $product = Product::findOrFail($product_id); // Use product_id
+    $product = Product::findOrFail($product_id);
 
-        $product->product_name = $request->input('product_name');
-        $product->description = $request->input('description');
-        $product->price = $request->input('price');
-        $product->available_quantity = $request->input('available_quantity');
-        $product->category = $request->input('category');
+    $product->product_name = $request->input('product_name');
+    $product->description = $request->input('description');
+    $product->price = $request->input('price');
+    $product->available_quantity = max(0, $request->input('available_quantity')); // Ensure non-negative
+    $product->category = $request->input('category');
 
-        if ($request->hasFile('image')) {
-            if ($product->image) {
-                Storage::delete('public/' . $product->image);
-            }
-
-            $imagePath = $request->file('image')->store('products', 'public');
-            $product->image = $imagePath;
+    if ($request->hasFile('image')) {
+        if ($product->image) {
+            Storage::delete('public/' . $product->image);
         }
-
-        $product->save();
-
-        return redirect()->route('products.index', $product->product_id)->with('updated', 'Product updated successfully!');
+        $imagePath = $request->file('image')->store('products', 'public');
+        $product->image = $imagePath;
     }
 
-    public function updateQuantity(Request $request, $product_id)
-    {
-        $product = Product::findOrFail($product_id);
+    $product->save();
 
-        if ($request->has('quantity_change')) {
-            if ($request->input('quantity_change') === 'increase') {
-                $product->available_quantity++;
-            } elseif ($request->input('quantity_change') === 'decrease' && $product->available_quantity > 0) {
-                $product->available_quantity--;
-            }
+    return redirect()->route('products.index', $product->product_id)->with('updated', 'Product updated successfully!');
+}
+
+public function updateQuantity(Request $request, $product_id)
+{
+    $product = Product::findOrFail($product_id);
+
+    if ($request->has('quantity_change')) {
+        if ($request->input('quantity_change') === 'increase') {
+            $product->available_quantity++;
+        } elseif ($request->input('quantity_change') === 'decrease' && $product->available_quantity > 0) {
+            $product->available_quantity = max(0, $product->available_quantity - 1); // Prevent negative
         }
-
-        $product->save();
-
-        return redirect()->back()->with('updated', 'Product quantity updated successfully!');
     }
+
+    $product->save();
+
+    return redirect()->back()->with('updated', 'Product quantity updated.');
+}
 
 
     //DELETE
     public function destroy($product_id)
-    {
-        try {
-            $product = Product::findOrFail($product_id);
+{
+    $product = Product::findOrFail($product_id);
 
-            // Delete associated image
-            if ($product->image) {
-                Storage::delete('public/' . $product->image);
-            }
-
-            $product->delete();
-
-            return redirect()->route('admin.products.index')->with('updated', 'Product removed successfully.');
-        } catch (\Exception $e) {
-            Log::error('Error removing product', ['exception' => $e->getMessage()]);
-            return back()->withErrors(['error' => 'There was an error removing the product.']);
-        }
+    if ($product->image) {
+        $deletedImage = Storage::delete('public/' . $product->image);
+    } else {
+        $deletedImage = true;
     }
+
+    if (!$deletedImage) {
+        return back()->withErrors(['error' => 'There was an error removing the product image.']);
+    }
+
+    $deletedProduct = $product->delete();
+
+    if ($deletedProduct) {
+        return redirect()->route('products.index')->with('updated', 'Product removed successfully.');
+    } else {
+        return back()->withErrors(['error' => 'There was an error removing the product.']);
+    }
+}
+
+
 
 }

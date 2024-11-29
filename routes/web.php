@@ -6,10 +6,11 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
+use App\Http\Controllers\AdminOrderItemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\UserController;
 
 
 /**
@@ -51,10 +52,9 @@ Route::middleware(['auth'])->group(function () {
     // Cart and Checkout
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
-    Route::post('/checkout', [OrderController::class, 'store'])->name('cart.store');
+    Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout'); 
     Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
-    Route::delete('/cart/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');
-
+    Route::delete('/cart/remove/{product_id}', [CartController::class, 'remove'])->name('cart.remove');
 
 
     // Orders
@@ -81,8 +81,28 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/admin/products/{product_id}', [AdminProductController::class, 'destroy'])->name('admin.products.destroy');
 });
 
-
-// Inside the authenticated group if needed
-Route::middleware('auth')->group(function () {
-    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/orders', [AdminOrderController::class, 'index'])->name('admin.orders.index');
+    Route::get('/orders/{id}/edit', [AdminOrderController::class, 'edit'])->name('admin.orders.edit');
+    Route::put('/orders/{id}', [AdminOrderController::class, 'update'])->name('admin.orders.update');
+    Route::delete('/orders/{id}', [AdminOrderController::class, 'destroy'])->name('admin.orders.destroy');
 });
+
+Route::get('/order-items', [AdminOrderItemController::class, 'index'])->name('admin.orderitems.index');
+
+Route::get('/users', [UserController::class, 'index'])->name('admin.users.index'); // List users
+Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit'); // Edit user
+Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update'); // Update user
+Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy'); // Delete user
+
+
+// // Inside the authenticated group if needed
+// Route::middleware('auth')->group(function () {
+//     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+// });
+Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
+Route::delete('/admin/orders/{order_id}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+Route::get('/order-items', [AdminOrderItemController::class, 'index'])->name('order-items.index');
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+

@@ -11,6 +11,8 @@ class Order extends Model
 
     protected $table = 'orders';
 
+    protected $primaryKey = 'order_id';
+
     protected $fillable = [
         'user_id',
         'order_date',
@@ -18,14 +20,13 @@ class Order extends Model
         'order_status',
     ];
 
-    // Relationships
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function orderItems()
+    public function items()
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(OrderItem::class, 'order_id');
     }
 }
