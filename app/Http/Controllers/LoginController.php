@@ -32,7 +32,7 @@ class LoginController extends Controller
             Session::put('first_name', $user->first_name);
             Session::put('access', $user->access); 
 
-            return redirect()->intended('/');
+            return redirect()->intended('/home');
         }
 
         return back()->withErrors(['email' => 'The provided credentials do not match our records.']);

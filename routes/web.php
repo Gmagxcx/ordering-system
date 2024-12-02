@@ -17,7 +17,7 @@ use App\Http\Controllers\UserController;
  * Home Routes
  */
 Route::get('/', function () {
-    return view('home');
+    return redirect()->route('login');
 });
 
 /**
@@ -49,10 +49,13 @@ Route::post('/register', [RegisterController::class, 'store'])->name('register.s
  * Authenticated Routes
  */
 Route::middleware(['auth'])->group(function () {
+    Route::get('/home', function () {
+        return view('home'); // Ensure "home" view exists
+    })->name('home');
     // Cart and Checkout
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
-    Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout'); 
+    Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
     Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{product_id}', [CartController::class, 'remove'])->name('cart.remove');
 
