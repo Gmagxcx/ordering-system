@@ -32,8 +32,13 @@ Route::get('/contact', function () {
  * Authentication Routes
  */
 Route::get('/login', function () {
+    // Redirect authenticated users to home
+    if (Auth::check()) {
+        return redirect()->route('home');
+    }
     return view('login');
 })->name('login');
+
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
