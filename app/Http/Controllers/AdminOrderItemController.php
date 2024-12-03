@@ -3,13 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Models\OrderItem;
+use Illuminate\Http\Request;
 
 class AdminOrderItemController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $orderItems = OrderItem::with(['order', 'product'])->get();
+        $search = $request->input('search');
 
-        return view('admin_orderItems_page', compact('orderItems'));
+        if ($search) {
+            // Search only order_id and item_price
+            $orderItems = OrderItem::with(['order', 'product'])
+                ->where('order_id', 'like', "%$search%") 
+                ->orWhere('item_price', 'like', "%$search%") 
+                ->orWhereHas('product', function($query) use ($search) {
+                    $query->where('product_name', 'like', "%$search%"); // Search for product_name in related Product model
+                })
+                ->paginate(10); 
+        } else {
+            
+            $orderItems = OrderItem::with(['order', 'product'])->paginate(10);
+        }
+
+
+        $totalOrderItems = OrderItem::count();
+
+        return view('admin_orderItems_page', compact('orderItems', 'totalOrderItems'));
     }
 }

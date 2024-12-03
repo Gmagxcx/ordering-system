@@ -8,6 +8,11 @@
     
 }
 
+.searchGroup{
+    background-color: #e9ecef;
+    padding: 1rem;
+}
+
 .report {
     flex-basis: 100%; /* Ensures the report takes up 100% on mobile */
     max-width: 175px; /* Sets a maximum width for each report */

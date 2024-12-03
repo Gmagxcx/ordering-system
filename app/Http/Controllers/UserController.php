@@ -8,19 +8,27 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     // Display a list of all users
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all(); // Retrieve all users from the database
+        $search = $request->input('search');
+
+        if ($search) {
+            $users = User::where('first_name', 'like', "%$search%")
+                ->orWhere('last_name', 'like', "%$search%")
+                ->orWhere('email', 'like', "%$search%")
+                ->orWhere('access', 'like', "%$search%")
+                ->paginate(10);
+        } else {
+            $users = User::paginate(10);
+        }
 
         // Count the number of users by access level
-        $totalUsers = $users->count();
-        $regularUsers = $users->where('access', 'user')->count();
-        $employees = $users->where('access', 'employee')->count();
-        $administrators = $users->where('access', 'admin')->count();
+        $totalUsers = User::count();
+        $regularUsers = User::where('access', 'user')->count();
+        $employees = User::where('access', 'employee')->count();
+        $administrators = User::where('access', 'admin')->count();
 
-        $users = User::paginate(10);
-        
-        return view('admin_viewUsers', compact('users', 'totalUsers', 'regularUsers', 'employees', 'administrators')); // Return view with users data
+        return view('admin_viewUsers', compact('users', 'totalUsers', 'regularUsers', 'employees', 'administrators'));
     }
 
     // Show the form for editing a specific user
@@ -47,7 +55,7 @@ class UserController extends Controller
         $user->update($validated);
 
         // Redirect back with success message
-        return redirect()->route('admin.users.index')->with('success', 'User updated successfully');
+        return redirect()->route('users.index')->with('success', 'User updated successfully');
     }
 
     // Delete a specific user
@@ -58,6 +66,6 @@ class UserController extends Controller
         $user->delete(); // Delete the user
 
         // Redirect back with success message
-        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully');
+        return redirect()->route('users.index')->with('success', 'User deleted successfully');
     }
 }

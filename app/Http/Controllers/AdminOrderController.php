@@ -8,10 +8,38 @@ use App\Models\OrderItem;
 
 class AdminOrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::with('user')->get(); // Get all orders with user details
-        return view('admin_order_page', compact('orders')); // Make sure to use the correct view name
+
+        $search = $request->input('search');
+
+        $ordersQuery = Order::with('user');
+        
+        if ($search) {
+            $ordersQuery->where(function ($query) use ($search) {
+                $query->where('order_status', 'like', "%$search%")
+                    ->orWhere('total_price', 'like', "%$search%")
+                    ->orWhere('order_date', 'like', "%$search%")
+                    ->orWhereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('first_name', 'like', "%$search%")
+                                  ->orWhere('last_name', 'like', "%$search%");
+                    });
+            });
+        }
+        $orders = $ordersQuery->paginate(10);
+
+        $totalOrders = Order::count();
+        $pendingCount = Order::where('order_status', 'Pending')->count();
+        $processedCount = Order::where('order_status', 'Processing')->count();
+        $completedCount = Order::where('order_status', 'Completed')->count();
+
+        return view('admin_order_page', compact(
+            'totalOrders',
+            'pendingCount',
+            'processedCount',
+            'completedCount',
+            'orders'
+        ));
     }
 
     public function edit($id)
@@ -43,4 +71,5 @@ class AdminOrderController extends Controller
 
         return redirect()->route('orders.index')->with('success', 'Order deleted successfully.');
     }
+
 }

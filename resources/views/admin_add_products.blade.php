@@ -70,7 +70,7 @@
             @error('image') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
 
-        <button type="submit" class="btn btn-primary">Add Product</button>
+        <button type="submit" class="btn btn-primary mb-3">Add Product</button>
     </form>
 </div>
 
