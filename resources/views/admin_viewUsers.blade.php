@@ -4,6 +4,12 @@
 <link href="{{ asset('css/users.css') }}" rel="stylesheet">
 
 <div class="container mt-5">
+
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
     
 
     <div class="table-container">
@@ -15,7 +21,7 @@
 
         <div class="report-container">
             <div class="report r-total">
-                <h6 class="total">Total Number of Users</h6>
+                <h6 class="total">Total</h6>
                 <h3 class="total">{{ $totalUsers }}</h3>
             </div>
 
@@ -35,6 +41,10 @@
             </div>
         </div>
 
+        <form action="{{ url('/users') }}" method="GET" class="searchGroup mb-0 d-flex justify-content align-items-center">
+            <input type="search" name="search" class="form-control w-20 me-2" placeholder="Search names, access levels etc. Hit enter to search" value="{{ request('search') }}">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
 
         <div class="table-responsive">
             <table class="table table-hover custom-table">
