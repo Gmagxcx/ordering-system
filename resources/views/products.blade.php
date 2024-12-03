@@ -5,7 +5,6 @@
     <h2>Our Products</h2>
     <div>
     @if(Auth::check() && (Auth::user()->access === 'admin' || Auth::user()->access === 'employee'))
-
         <button id="cardViewBtn" class="btn btn-primary">Card View</button>
         
             <button id="tableViewBtn" class="btn btn-secondary">Table View</button>
@@ -234,9 +233,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const tableViewBtn = document.getElementById('tableViewBtn');
     const cardView = document.getElementById('cardView');
     const tableView = document.getElementById('tableView');
+    const userId = "{{ Auth::id() }}";
 
-    // Check the stored view preference on page load
-    const savedView = localStorage.getItem('view');
+    const viewPreferenceKey = `viewPreference_${userId}`;
+
+    const savedView = localStorage.getItem(viewPreferenceKey);
     if (savedView === 'table') {
         tableView.classList.remove('d-none');
         cardView.classList.add('d-none');
@@ -253,11 +254,10 @@ document.addEventListener('DOMContentLoaded', function () {
         tableViewBtn.classList.remove('btn-primary');
     }
 
-    // Add event listeners to save the view preference when the user switches views
     cardViewBtn.addEventListener('click', function () {
         cardView.classList.remove('d-none');
         tableView.classList.add('d-none');
-        localStorage.setItem('view', 'card'); // Save preference
+        localStorage.setItem(viewPreferenceKey, 'card');
         cardViewBtn.classList.add('btn-primary');
         cardViewBtn.classList.remove('btn-secondary');
         tableViewBtn.classList.add('btn-secondary');
@@ -267,14 +267,13 @@ document.addEventListener('DOMContentLoaded', function () {
     tableViewBtn.addEventListener('click', function () {
         tableView.classList.remove('d-none');
         cardView.classList.add('d-none');
-        localStorage.setItem('view', 'table'); // Save preference
+        localStorage.setItem(viewPreferenceKey, 'table');
         tableViewBtn.classList.add('btn-primary');
         tableViewBtn.classList.remove('btn-secondary');
         cardViewBtn.classList.add('btn-secondary');
         cardViewBtn.classList.remove('btn-primary');
     });
 
-    // Handle the delete confirmation
     const removeButtons = document.querySelectorAll('.product-remove-btn');
     removeButtons.forEach(button => {
         button.addEventListener('click', function () {

@@ -47,11 +47,20 @@
 
                                     {{ $totalQuantity }}
                                 </span>
-
                             </i>
                         </a>
                     </li>
                     @if(Auth::check())
+                        <li class="nav-item">
+                            <span class="nav-link welcome-message">
+                                Welcome back, <strong>{{ Session::get('first_name') }}</strong>
+                            </span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('profile.show') }}">
+                                <i class="bi bi-person-circle" style="font-size: 1.2rem;"></i>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -67,19 +76,6 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/register') }}">Sign up</a>
-                        </li>
-                    @endif
-                    @if(Session::has('first_name'))
-                        <li class="nav-link welcome-message">
-                            <span>Welcome back, {{ Session::get('first_name') }}</span>
-
-                            @if(Session::get('access') === 'admin')
-                                <span class="admin">(Admin)</span>
-                            @elseif(Session::get('access') === 'employee')
-                                <span class="employee">(Employee)</span>
-                            @else
-                                <span class="user"></span>
-                            @endif
                         </li>
                     @endif
                 </ul>

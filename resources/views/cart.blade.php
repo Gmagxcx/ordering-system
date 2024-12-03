@@ -44,7 +44,7 @@
 
     <div class="text-center">
         <p class="lead">Total Price: ₱{{ number_format($order->total_price, 2) }}</p>
-        <form action="{{ route('cart.checkout') }}" method="POST">
+        <form action="{{ route('checkout.store') }}" method="POST">
         @csrf
             <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
         </form>

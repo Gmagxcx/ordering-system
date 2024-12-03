@@ -20,6 +20,11 @@ class Order extends Model
         'order_status',
     ];
 
+    protected $casts = [
+        'order_date' => 'datetime',
+    ];
+    
+
     public function user()
     {
         return $this->belongsTo(User::class);

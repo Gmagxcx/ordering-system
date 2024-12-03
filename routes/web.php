@@ -10,6 +10,7 @@ use App\Http\Controllers\AdminOrderItemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\UserController;
 
 
@@ -104,13 +105,15 @@ Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.
 Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy'); // Delete user
 
 
-// // Inside the authenticated group if needed
-// Route::middleware('auth')->group(function () {
-//     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
-// });
 Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
 Route::delete('/admin/orders/{order_id}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 Route::get('/order-items', [AdminOrderItemController::class, 'index'])->name('order-items.index');
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 
+
+Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout.store');
+Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+Route::get('/checkout/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
+
+Route::get('/profile', [UserController::class, 'showProfile'])->name('profile.show');
