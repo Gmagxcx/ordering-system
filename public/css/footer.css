@@ -1,0 +1,36 @@
+/* Footer styles */
+footer {
+    background-color: #f48fb1; /* Pink background for the footer */
+    color: white; /* White text color */
+    text-align: center; /* Center-align text */
+    padding: 30px 0; /* Padding for spacing, no left/right padding to make it full width */
+    width: 100%; /* Make the footer extend to the full width of the screen */
+    position: relative; /* Ensure it stays at the bottom of the page */
+    margin-top: 40px; /* Space above the footer */
+}
+
+/* Footer links styling */
+.footer a {
+    color: #ffffff; /* White color for the links */
+    text-decoration: none; /* Remove underline */
+    padding: 0 10px; /* Add some spacing between links */
+    font-size: 16px; /* Font size for links */
+    transition: color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Hover effect for links */
+.footer a:hover {
+    color: #333333; /* Dark color on hover for contrast */
+}
+
+/* Responsive footer adjustments */
+@media (max-width: 768px) {
+    .footer {
+        padding: 20px 0; /* Reduced padding on mobile */
+    }
+
+    .footer a {
+        font-size: 14px; /* Smaller font size for mobile */
+        padding: 5px 8px; /* Less padding between links */
+    }
+}

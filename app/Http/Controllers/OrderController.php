@@ -50,12 +50,11 @@ class OrderController extends Controller
 
     // Check if the order has items
     if ($order->orderItems && $order->orderItems->isNotEmpty()) {
-        // Loop through order items and return the quantity to the inventory
         foreach ($order->orderItems as $item) {
-            $product = $item->product; // Assuming you have a 'product' relationship on orderItem
+            $product = $item->product; 
             if ($product) {
-                $product->quantity += $item->quantity; // Increase the product quantity
-                $product->save(); // Save the updated product
+                $product->quantity += $item->quantity; 
+                $product->save();
             }
         }
     }

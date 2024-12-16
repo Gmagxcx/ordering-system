@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ordering System</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/cotton.png') }}">
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -82,10 +84,16 @@
             </div>
         </div>
     </nav>
-
     <div class="container mt-5">
         @yield('content')
     </div>
+
+    <footer class="footer text-white py-4 mt-5">
+        <div class="container text-center">
+            <p>&copy; 2024 Kendy Corner. All Rights Reserved.</p>
+            <p><a href="{{ url('/privacy') }}" class="text-white">Privacy Policy</a> | <a href="{{ url('/terms') }}" class="text-white">Terms of Service</a></p>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
